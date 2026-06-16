@@ -10,27 +10,68 @@
       .app-container { width: 100%; height: 100%; position: relative; }
       .canvas-wrapper { width: 100%; height: 100%; position: absolute; top: 0; left: 0; }
 
+      /* 双分子分屏布局 */
+      .canvas-wrapper.split-left { width: calc(50% - 2px); right: auto; left: 0; }
+      .canvas-wrapper.split-right { width: calc(50% - 2px); left: auto; right: 0; }
+      .split-divider { position: absolute; top: 0; bottom: 0; left: 50%; width: 4px; transform: translateX(-50%); background: linear-gradient(180deg, rgba(100,140,255,0.1) 0%, rgba(100,140,255,0.3) 50%, rgba(100,140,255,0.1) 100%); z-index: 5; pointer-events: none; }
+
+      /* 场景标签 */
+      .scene-label { position: absolute; top: 80px; z-index: 8; display: flex; flex-direction: column; gap: 4px; pointer-events: none; }
+      .scene-label-left { left: 20px; align-items: flex-start; }
+      .scene-label-right { right: 20px; align-items: flex-end; }
+      .scene-label-title { font-size: 16px; font-weight: 600; color: #8ab4ff; text-shadow: 0 2px 8px rgba(0,0,0,0.8); }
+      .scene-label-formula { font-size: 22px; font-weight: 700; color: #ffffff; font-family: 'Courier New', monospace; letter-spacing: 1px; text-shadow: 0 2px 8px rgba(0,0,0,0.8); }
+
       /* 顶部搜索栏 */
       .top-bar { position: absolute; top: 0; left: 0; right: 0; z-index: 10; display: flex; align-items: center; justify-content: center; padding: 16px 24px; gap: 12px; pointer-events: none; }
+      .view-mode-toggle { pointer-events: auto; display: flex; gap: 4px; background: rgba(15, 20, 40, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(100, 140, 255, 0.25); border-radius: 10px; padding: 4px; box-shadow: 0 4px 24px rgba(0,0,0,0.4); }
+      .view-mode-btn { padding: 8px 16px; border: none; border-radius: 7px; cursor: pointer; font-size: 13px; font-weight: 500; color: rgba(180, 190, 220, 0.6); background: transparent; transition: all 0.2s; white-space: nowrap; }
+      .view-mode-btn:hover { color: #e0e0e0; background: rgba(100, 140, 255, 0.1); }
+      .view-mode-btn.active { color: #ffffff; background: rgba(100, 140, 255, 0.35); box-shadow: 0 0 12px rgba(100,140,255,0.2); }
+
       .search-box { pointer-events: auto; display: flex; align-items: center; background: rgba(15, 20, 40, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(100, 140, 255, 0.25); border-radius: 12px; padding: 0 16px; height: 44px; width: 420px; max-width: 90vw; box-shadow: 0 4px 24px rgba(0,0,0,0.4); }
       .search-icon { color: #6488ff; margin-right: 10px; font-size: 18px; }
       .search-input { background: transparent; border: none; outline: none; color: #e0e0e0; font-size: 15px; flex: 1; height: 100%; }
       .search-input::placeholder { color: rgba(180, 190, 220, 0.5); }
+
+      /* 双搜索框布局 */
+      .dual-search-boxes { pointer-events: auto; display: flex; gap: 12px; align-items: center; }
+      .search-box.search-box-left, .search-box.search-box-right { width: 340px; max-width: 42vw; }
+      .search-tag { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 6px; margin-right: 10px; letter-spacing: 0.5px; }
+      .search-tag-left { background: rgba(100, 160, 255, 0.2); color: #8ab4ff; border: 1px solid rgba(100, 160, 255, 0.3); }
+      .search-tag-right { background: rgba(255, 140, 140, 0.2); color: #ff8a8a; border: 1px solid rgba(255, 140, 140, 0.3); }
+
       .search-results { pointer-events: auto; position: absolute; top: 68px; left: 50%; transform: translateX(-50%); width: 420px; max-width: 90vw; background: rgba(15, 20, 40, 0.95); backdrop-filter: blur(12px); border: 1px solid rgba(100, 140, 255, 0.25); border-radius: 10px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.5); z-index: 20; }
+      .search-results.search-results-dual { width: 380px; }
       .search-result-item { padding: 10px 16px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; transition: background 0.15s; border-bottom: 1px solid rgba(100,140,255,0.08); }
       .search-result-item:last-child { border-bottom: none; }
       .search-result-item:hover { background: rgba(100, 140, 255, 0.15); }
       .result-name { font-size: 14px; color: #e0e0e0; }
       .result-formula { font-size: 13px; color: #6488ff; font-family: 'Courier New', monospace; }
 
-      /* 右侧信息面板 */
-      .info-panel { position: absolute; top: 80px; right: 20px; z-index: 10; width: 260px; background: rgba(15, 20, 40, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(100, 140, 255, 0.2); border-radius: 14px; padding: 20px; box-shadow: 0 4px 24px rgba(0,0,0,0.4); }
-      .panel-title { font-size: 18px; font-weight: 600; color: #8ab4ff; margin-bottom: 4px; }
-      .panel-formula { font-size: 22px; font-weight: 700; color: #ffffff; margin-bottom: 16px; font-family: 'Courier New', monospace; letter-spacing: 1px; }
-      .panel-divider { height: 1px; background: rgba(100, 140, 255, 0.15); margin: 12px 0; }
-      .panel-row { display: flex; justify-content: space-between; align-items: center; padding: 6px 0; }
-      .panel-label { font-size: 13px; color: rgba(180, 190, 220, 0.7); }
-      .panel-value { font-size: 14px; color: #e0e0e0; font-weight: 500; }
+      /* 信息面板 */
+      .info-panel { position: absolute; top: 140px; right: 20px; z-index: 10; width: 240px; max-height: calc(100vh - 200px); overflow-y: auto; background: rgba(15, 20, 40, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(100, 140, 255, 0.2); border-radius: 14px; padding: 18px; box-shadow: 0 4px 24px rgba(0,0,0,0.4); }
+      .info-panel::-webkit-scrollbar { width: 4px; }
+      .info-panel::-webkit-scrollbar-track { background: transparent; }
+      .info-panel::-webkit-scrollbar-thumb { background: rgba(100,140,255,0.3); border-radius: 2px; }
+      .info-panel-left { left: 20px; right: auto; border-color: rgba(100, 160, 255, 0.25); }
+      .info-panel-right { right: 20px; left: auto; border-color: rgba(255, 140, 140, 0.25); }
+      .panel-tag { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 6px; display: inline-block; margin-bottom: 10px; letter-spacing: 0.5px; }
+      .panel-tag-left { background: rgba(100, 160, 255, 0.2); color: #8ab4ff; border: 1px solid rgba(100, 160, 255, 0.3); }
+      .panel-tag-right { background: rgba(255, 140, 140, 0.2); color: #ff8a8a; border: 1px solid rgba(255, 140, 140, 0.3); }
+      .panel-title { font-size: 17px; font-weight: 600; color: #8ab4ff; margin-bottom: 4px; }
+      .panel-formula { font-size: 20px; font-weight: 700; color: #ffffff; margin-bottom: 14px; font-family: 'Courier New', monospace; letter-spacing: 1px; }
+      .panel-divider { height: 1px; background: rgba(100, 140, 255, 0.15); margin: 10px 0; }
+      .panel-row { display: flex; justify-content: space-between; align-items: center; padding: 5px 0; }
+      .panel-label { font-size: 12px; color: rgba(180, 190, 220, 0.7); }
+      .panel-value { font-size: 13px; color: #e0e0e0; font-weight: 500; }
+
+      /* 面板内分子切换按钮 */
+      .panel-molecule-list { display: flex; flex-direction: column; gap: 4px; }
+      .panel-mol-btn { padding: 6px 10px; border: 1px solid rgba(100, 140, 255, 0.12); border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 500; color: rgba(180, 190, 220, 0.6); background: rgba(10, 15, 30, 0.5); transition: all 0.15s; text-align: left; }
+      .panel-mol-btn:hover { color: #e0e0e0; border-color: rgba(100, 140, 255, 0.4); background: rgba(100, 140, 255, 0.08); }
+      .panel-mol-btn.active { color: #8ab4ff; border-color: rgba(100, 140, 255, 0.5); background: rgba(100, 140, 255, 0.12); }
+      .info-panel-right .panel-mol-btn.active { color: #ff8a8a; border-color: rgba(255, 140, 140, 0.5); background: rgba(255, 140, 140, 0.12); }
 
       /* 显示模式切换 */
       .mode-toggle { position: absolute; bottom: 24px; left: 50%; transform: translateX(-50%); z-index: 10; display: flex; gap: 4px; background: rgba(15, 20, 40, 0.85); backdrop-filter: blur(12px); border: 1px solid rgba(100, 140, 255, 0.2); border-radius: 12px; padding: 5px; box-shadow: 0 4px 24px rgba(0,0,0,0.4); }

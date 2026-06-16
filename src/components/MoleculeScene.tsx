@@ -10,6 +10,9 @@ interface MoleculeSceneProps {
   molecule: MoleculeData
   mode: DisplayMode
   onAtomHover: (info: { element: string; name: string; charge?: string; screenX: number; screenY: number } | null) => void
+  autoRotate?: boolean
+  autoRotateSpeed?: number
+  viewKey?: string
 }
 
 const getAtomRadius = (atom: AtomData, mode: DisplayMode): number => {
@@ -30,9 +33,10 @@ interface Atom3DProps {
   index: number
   mode: DisplayMode
   onAtomHover: MoleculeSceneProps['onAtomHover']
+  viewKey?: string
 }
 
-const Atom3D: React.FC<Atom3DProps> = ({ atom, index, mode, onAtomHover }) => {
+const Atom3D: React.FC<Atom3DProps> = ({ atom, index, mode, onAtomHover, viewKey }) => {
   const meshRef = useRef<THREE.Mesh>(null)
   const [hovered, setHovered] = React.useState(false)
   const radius = getAtomRadius(atom, mode)
@@ -169,7 +173,14 @@ const CameraController: React.FC<{ molecule: MoleculeData }> = ({ molecule }) =>
   return null
 }
 
-export const MoleculeScene: React.FC<MoleculeSceneProps> = ({ molecule, mode, onAtomHover }) => {
+export const MoleculeScene: React.FC<MoleculeSceneProps> = ({
+  molecule,
+  mode,
+  onAtomHover,
+  autoRotate = true,
+  autoRotateSpeed = 0.8,
+  viewKey
+}) => {
   return (
     <>
       <color attach="background" args={['#0a0e1a']} />
@@ -184,17 +195,18 @@ export const MoleculeScene: React.FC<MoleculeSceneProps> = ({ molecule, mode, on
 
       {molecule.atoms.map((atom, i) => (
         <Atom3D
-          key={`atom-${i}-${mode}`}
+          key={`atom-${i}-${mode}-${viewKey || ''}`}
           atom={atom}
           index={i}
           mode={mode}
           onAtomHover={onAtomHover}
+          viewKey={viewKey}
         />
       ))}
 
       {mode !== 'space-filling' && molecule.bonds.map((bond, i) => (
         <Bond3D
-          key={`bond-${i}-${mode}`}
+          key={`bond-${i}-${mode}-${viewKey || ''}`}
           from={molecule.atoms[bond.from]}
           to={molecule.atoms[bond.to]}
           order={bond.order}
@@ -212,14 +224,15 @@ export const MoleculeScene: React.FC<MoleculeSceneProps> = ({ molecule, mode, on
       />
 
       <OrbitControls
+        key={`controls-${viewKey || 'default'}`}
         enableDamping
         dampingFactor={0.12}
         rotateSpeed={0.8}
         zoomSpeed={0.9}
         minDistance={2}
         maxDistance={20}
-        autoRotate
-        autoRotateSpeed={0.8}
+        autoRotate={autoRotate}
+        autoRotateSpeed={autoRotateSpeed}
       />
     </>
   )
